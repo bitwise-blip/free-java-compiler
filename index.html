@@ -7,38 +7,29 @@
         :root { --pg-blue: #0056d2; --bg-main: #f0f2f5; --border: #e1e4e8; --sidebar: #f8f9fa; }
         body { margin: 0; font-family: "Segoe UI", Roboto, sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; background: white; }
 
-        /* Top Header */
         header { border-bottom: 1px solid var(--border); padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; }
         .logo-area { display: flex; flex-direction: column; }
         .logo-main { font-weight: 800; font-size: 20px; color: #25265e; line-height: 1; }
         .logo-sub { font-size: 12px; color: #666; margin-top: 4px; }
         .pro-btn { border: 1px solid var(--pg-blue); color: var(--pg-blue); background: white; padding: 6px 15px; border-radius: 4px; font-weight: 600; font-size: 13px; }
 
-        /* Main App Container */
         .app-body { display: flex; flex: 1; overflow: hidden; }
-
-        /* Left Sidebar Icons */
         .sidebar { width: 45px; background: var(--sidebar); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding-top: 10px; gap: 15px; }
         .icon-circle { width: 28px; height: 28px; border-radius: 50%; background: #ddd; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #666; font-weight: bold; }
         .icon-java { background: var(--pg-blue); color: white; }
 
-        /* Workspace with Editor and Console */
         .workspace { flex: 1; display: flex; flex-direction: column; }
         .toolbar { border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; height: 45px; background: white; }
         .tab { border-right: 1px solid var(--border); border-top: 3px solid var(--pg-blue); padding: 0 25px; height: 100%; display: flex; align-items: center; font-size: 13px; font-weight: 600; color: #333; background: #f9f9f9; }
         .controls { display: flex; align-items: center; gap: 15px; padding-right: 20px; }
-        .ctrl-icon { color: #888; font-size: 16px; cursor: pointer; }
         .run-btn { background: var(--pg-blue); color: white; border: none; padding: 6px 30px; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
-        /* Pane Layout */
         .panes { display: flex; flex: 1; overflow: hidden; }
         .editor-pane { flex: 1; border-right: 1px solid var(--border); display: flex; flex-direction: column; }
         .output-pane { flex: 1; background: white; display: flex; flex-direction: column; }
-        .output-header { padding: 10px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #666; font-weight: 600; }
-        .clear-btn { border: 1px solid var(--border); background: white; color: #888; padding: 2px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; }
-
-        /* Text Areas */
-        textarea { flex: 1; border: none; padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 14px; line-height: 1.5; outline: none; resize: none; color: #24292e; }
+        .output-header { padding: 10px 20px; border-bottom: 1px solid var(--border); font-size: 14px; color: #666; font-weight: 600; }
+        
+        textarea { flex: 1; border: none; padding: 15px; font-family: 'Consolas', monospace; font-size: 14px; line-height: 1.5; outline: none; resize: none; color: #24292e; }
         #console { flex: 1; padding: 20px; font-family: monospace; font-size: 14px; color: #333; white-space: pre-wrap; overflow-y: auto; }
     </style>
 </head>
@@ -54,34 +45,20 @@
 
 <div class="app-body">
     <div class="sidebar">
-        <div class="icon-circle">Py</div>
-        <div class="icon-circle">R</div>
-        <div class="icon-circle">C</div>
+        <div class="icon-circle">Py</div><div class="icon-circle">R</div><div class="icon-circle">C</div>
         <div class="icon-circle icon-java">☕</div>
-        <div class="icon-circle">K</div>
-        <div class="icon-circle">JS</div>
+        <div class="icon-circle">K</div><div class="icon-circle">JS</div>
     </div>
 
     <div class="workspace">
         <div class="toolbar">
             <div class="tab">Main.java</div>
-            <div class="controls">
-                <span class="ctrl-icon">⛶</span>
-                <span class="ctrl-icon">☾</span>
-                <span class="ctrl-icon">🔗</span>
-                <button class="run-btn" onclick="processJava()">Run</button>
-            </div>
+            <div class="controls"><button class="run-btn" onclick="processJava()">Run</button></div>
         </div>
-
         <div class="panes">
-            <div class="editor-pane">
-                <textarea id="code-input" spellcheck="false"></textarea>
-            </div>
+            <div class="editor-pane"><textarea id="code-input" spellcheck="false"></textarea></div>
             <div class="output-pane">
-                <div class="output-header">
-                    <span>Output</span>
-                    <button class="clear-btn" onclick="document.getElementById('console').innerHTML = ''">Clear</button>
-                </div>
+                <div class="output-header">Output</div>
                 <div id="console"></div>
             </div>
         </div>
@@ -90,31 +67,31 @@
 
 <script>
     const db = {
-        "7": {
-            code: "import java.util.Scanner;\n\nclass Main {\n    public static void main(String[] args) {\n        int num = 29;\n        boolean isPrime = true;\n        if (num <= 1) isPrime = false;\n        else {\n            for (int i = 2; i <= num / 2; i++) {\n                if (num % i == 0) { isPrime = false; break; }\n            }\n        }\n        if (isPrime) System.out.println(num + \" is a Prime number.\");\n        else System.out.println(num + \" is NOT a Prime number.\");\n    }\n}",
-            out: "29 is a Prime number."
-        },
-        "8": {
-            code: "class Main {\n    public static void main(String[] args) {\n        int num = 121, rev = 0, rem, temp = num;\n        while (temp != 0) {\n            rem = temp % 10;\n            rev = rev * 10 + rem;\n            temp /= 10;\n        }\n        if (num == rev) System.out.println(num + \" is a Palindrome.\");\n    }\n}"
-        }
+        "1": { code: "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", out: "Hello, World!" },
+        "2": { code: "public class AddTwoNumbers {\n    public static void main(String[] args) {\n        int number1 = 5, number2 = 10;\n        int sum = number1 + number2;\n        System.out.println(\"The sum of \" + number1 + \" and \" + number2 + \" is: \" + sum);\n    }\n}", out: "The sum of 5 and 10 is: 15" },
+        "3": { code: "import java.util.Scanner;\npublic class EvenOrOdd {\n    public static void main(String[] args) {\n        int number = 10;\n        if (number % 2 == 0) System.out.println(number + \" is an even number.\");\n        else System.out.println(number + \" is an odd number.\");\n    }\n}", out: "10 is an even number." },
+        "4": { code: "public class FibonacciSeries {\n    public static void main(String[] args) {\n        int n = 10, firstTerm = 0, secondTerm = 1;\n        System.out.println(\"Fibonacci Series up to \" + n + \" terms:\");\n        for (int i = 1; i <= n; ++i) {\n            System.out.print(firstTerm + \" \");\n            int nextTerm = firstTerm + secondTerm;\n            firstTerm = secondTerm; secondTerm = nextTerm;\n        }\n    }\n}", out: "Fibonacci Series up to 10 terms:\n0 1 1 2 3 5 8 13 21 34" },
+        "5": { code: "public class MultiplyTwoNumbers {\n    public static void main(String[] args) {\n        float first = 1.5f, second = 2.0f;\n        float product = first * second;\n        System.out.println(\"The product is: \" + product);\n    }\n}", out: "The product is: 3.0" },
+        "6": { code: "public class QuotientRemainder {\n    public static void main(String[] args) {\n        int dividend = 25, divisor = 4;\n        int quotient = dividend / divisor, remainder = dividend % divisor;\n        System.out.println(\"Quotient = \" + quotient + \"\\nRemainder = \" + remainder);\n    }\n}", out: "Quotient = 6\nRemainder = 1" },
+        "7": { code: "public class PrimeCheck {\n    public static void main(String[] args) {\n        int num = 29; boolean isPrime = true;\n        if (num <= 1) isPrime = false;\n        else {\n            for (int i = 2; i <= num / 2; i++) {\n                if (num % i == 0) { isPrime = false; break; }\n            }\n        }\n        if (isPrime) System.out.println(num + \" is a Prime number.\");\n        else System.out.println(num + \" is NOT a Prime number.\");\n    }\n}", out: "29 is a Prime number." },
+        "8": { code: "public class PalindromeNumber {\n    public static void main(String[] args) {\n        int num = 121, original = num, reverse = 0;\n        while (num > 0) {\n            int digit = num % 10;\n            reverse = reverse * 10 + digit;\n            num /= 10;\n        }\n        if (original == reverse) System.out.println(original + \" is a Palindrome.\");\n        else System.out.println(original + \" is NOT a Palindrome.\");\n    }\n}", out: "121 is a Palindrome." },
+        "9": { code: "public class GeometryCalculator {\n    public static void main(String[] args) {\n        double side = 5.0, radius = 3.0;\n        System.out.println(\"Square Area = \" + (side * side));\n        System.out.println(\"Circle Area = \" + (Math.PI * radius * radius));\n    }\n}", out: "Square Area = 25.0\nCircle Area = 28.274333882308138" },
+        "10": { code: "public class RightTriangle {\n    public static void main(String[] args) {\n        int rows = 5;\n        for (int i = 1; i <= rows; i++) {\n            for (int j = 1; j <= i; j++) System.out.print(\"* \");\n            System.out.println();\n        }\n    }\n}", out: "* \n* * \n* * * \n* * * * \n* * * * * " },
+        "11": { code: "public class ArraySum {\n    public static void main(String[] args) {\n        int[] numbers = {10, 20, 30, 40};\n        int sum = 0;\n        for (int n : numbers) sum += n;\n        System.out.println(\"The total sum is: \" + sum);\n    }\n}", out: "The total sum is: 100" },
+        "12": { code: "public class MatrixTranspose {\n    public static void main(String[] args) {\n        int[][] mat = {{1, 2}, {3, 4}};\n        System.out.println(\"Transpose: [[1, 3], [2, 4]]\");\n    }\n}", out: "Transpose: [[1, 3], [2, 4]]" }
     };
 
     function processJava() {
         const editor = document.getElementById('code-input');
         const consoleOut = document.getElementById('console');
         const key = editor.value.trim();
-
         if (db[key]) {
-            const data = db[key];
-            editor.value = data.code; // Swap ID for source code 
-            consoleOut.innerHTML = data.out || "Execution finished."; // 
-        } else if (key === "") {
-            consoleOut.innerHTML = "No input detected.";
+            editor.value = db[key].code;
+            consoleOut.innerHTML = db[key].out;
         } else {
-            consoleOut.innerHTML = "Result: " + key;
+            consoleOut.innerHTML = "Program ID not found.";
         }
     }
 </script>
-
 </body>
 </html>
