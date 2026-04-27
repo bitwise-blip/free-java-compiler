@@ -4,96 +4,1118 @@
     <meta charset="UTF-8">
     <title>Online Java Compiler - Programiz</title>
     <style>
-        :root { --pg-blue: #0056d2; --bg-main: #f0f2f5; --border: #e1e4e8; --sidebar: #f8f9fa; }
-        body { margin: 0; font-family: "Segoe UI", Roboto, sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; background: white; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --pg-blue: #0056d2;
+            --border: #e1e4e8;
+            --sidebar: #f8f9fa;
+            --toolbar-bg: #ffffff;
+            --output-bg: #ffffff;
+        }
+        body {
+            font-family: "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            background: white;
+            color: #24292e;
+        }
+        /* HEADER */
+        header {
+            border-bottom: 1px solid var(--border);
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 50px;
+            flex-shrink: 0;
+            background: white;
+        }
+        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-main { font-weight: 800; font-size: 20px; color: #25265e; }
+        .logo-sub { font-size: 11px; color: #888; border-left: 1px solid #ccc; padding-left: 10px; margin-left: 2px; }
+        .header-right { display: flex; align-items: center; gap: 12px; }
+        .header-btn {
+            background: none; border: 1px solid var(--border); padding: 5px 14px;
+            border-radius: 4px; font-size: 13px; cursor: pointer; color: #444;
+        }
+        .header-btn.primary { background: var(--pg-blue); color: white; border-color: var(--pg-blue); }
 
-        header { border-bottom: 1px solid var(--border); padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; }
-        .logo-area { display: flex; flex-direction: column; }
-        .logo-main { font-weight: 800; font-size: 20px; color: #25265e; line-height: 1; }
-        .logo-sub { font-size: 12px; color: #666; margin-top: 4px; }
-        .pro-btn { border: 1px solid var(--pg-blue); color: var(--pg-blue); background: white; padding: 6px 15px; border-radius: 4px; font-weight: 600; font-size: 13px; }
-
+        /* BODY */
         .app-body { display: flex; flex: 1; overflow: hidden; }
-        .sidebar { width: 45px; background: var(--sidebar); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding-top: 10px; gap: 15px; }
-        .icon-circle { width: 28px; height: 28px; border-radius: 50%; background: #ddd; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #666; font-weight: bold; }
-        .icon-java { background: var(--pg-blue); color: white; }
 
-        .workspace { flex: 1; display: flex; flex-direction: column; }
-        .toolbar { border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; height: 45px; background: white; }
-        .tab { border-right: 1px solid var(--border); border-top: 3px solid var(--pg-blue); padding: 0 25px; height: 100%; display: flex; align-items: center; font-size: 13px; font-weight: 600; color: #333; background: #f9f9f9; }
-        .controls { display: flex; align-items: center; gap: 15px; padding-right: 20px; }
-        .run-btn { background: var(--pg-blue); color: white; border: none; padding: 6px 30px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+        /* SIDEBAR */
+        .sidebar {
+            width: 48px;
+            background: #f8f9fa;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 10px;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .icon-circle {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: #ddd; display: flex; align-items: center;
+            justify-content: center; font-size: 11px; color: #666; font-weight: bold;
+            cursor: pointer;
+        }
+        .icon-java { background: var(--pg-blue); color: white; font-size: 14px; }
+        .icon-sidebar { background: #e0e0e0; color: #555; font-size: 12px; }
 
+        /* WORKSPACE */
+        .workspace { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+        /* TOOLBAR */
+        .toolbar {
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 42px;
+            background: white;
+            flex-shrink: 0;
+        }
+        .tabs { display: flex; height: 100%; }
+        .tab {
+            border-right: 1px solid var(--border);
+            border-top: 3px solid var(--pg-blue);
+            padding: 0 22px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            background: #f9f9f9;
+            gap: 8px;
+        }
+        .tab .close-icon { font-size: 11px; color: #999; cursor: pointer; }
+        .toolbar-actions { display: flex; align-items: center; gap: 10px; margin-right: 16px; }
+        .run-btn {
+            background: var(--pg-blue); color: white; border: none;
+            padding: 6px 28px; border-radius: 4px; font-weight: 700;
+            cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 6px;
+        }
+        .run-btn:hover { background: #0047b3; }
+        .run-btn .play-icon { font-size: 10px; }
+        .input-hint {
+            font-size: 12px; color: #888;
+            border: 1px solid var(--border); border-radius: 4px;
+            padding: 4px 10px;
+        }
+
+        /* PANES */
         .panes { display: flex; flex: 1; overflow: hidden; }
-        .editor-pane { flex: 1; border-right: 1px solid var(--border); display: flex; flex-direction: column; }
-        .output-pane { flex: 1; background: white; display: flex; flex-direction: column; }
-        .output-header { padding: 10px 20px; border-bottom: 1px solid var(--border); font-size: 14px; color: #666; font-weight: 600; }
-        
-        textarea { flex: 1; border: none; padding: 15px; font-family: 'Consolas', monospace; font-size: 14px; line-height: 1.5; outline: none; resize: none; color: #24292e; }
-        #console { flex: 1; padding: 20px; font-family: monospace; font-size: 14px; color: #333; white-space: pre-wrap; overflow-y: auto; }
+
+        /* EDITOR */
+        .editor-pane {
+            flex: 1;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: #fff;
+        }
+        .editor-wrap {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        .line-numbers {
+            background: #f9f9f9;
+            border-right: 1px solid #eee;
+            padding: 15px 10px 15px 8px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #aaa;
+            text-align: right;
+            user-select: none;
+            min-width: 40px;
+            overflow: hidden;
+        }
+        #code-input {
+            flex: 1;
+            border: none;
+            padding: 15px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            outline: none;
+            resize: none;
+            color: #24292e;
+            background: white;
+            tab-size: 4;
+        }
+        #code-input::placeholder { color: #aaa; }
+
+        /* INPUT BOX */
+        .input-section {
+            border-top: 1px solid var(--border);
+            background: #f9f9f9;
+            flex-shrink: 0;
+        }
+        .input-label {
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #888;
+            border-bottom: 1px solid #eee;
+        }
+        #prog-input {
+            width: 100%;
+            border: none;
+            padding: 8px 14px;
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+            background: #f9f9f9;
+            outline: none;
+            color: #333;
+        }
+        #prog-input::placeholder { color: #bbb; }
+
+        /* OUTPUT */
+        .output-pane {
+            flex: 1;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            min-width: 280px;
+        }
+        .output-header {
+            padding: 10px 18px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            color: #666;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .output-header span { color: #aaa; font-size: 11px; font-weight: normal; }
+        .clear-btn {
+            background: none; border: none; font-size: 12px;
+            color: #aaa; cursor: pointer; padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .clear-btn:hover { background: #f0f0f0; color: #666; }
+        #console {
+            flex: 1;
+            padding: 18px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+            color: #24292e;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            line-height: 1.6;
+        }
+        #console .error { color: #d73a49; }
+        #console .success { color: #22863a; }
+        #console .info { color: #0056d2; }
+
+        /* STATUS BAR */
+        .status-bar {
+            border-top: 1px solid var(--border);
+            background: #f8f9fa;
+            padding: 3px 14px;
+            font-size: 11px;
+            color: #888;
+            display: flex;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        /* TOOLTIP */
+        .tooltip {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #25265e;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 100;
+            display: none;
+            white-space: nowrap;
+        }
+        .tooltip.visible { display: block; }
     </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <header>
     <div class="logo-area">
         <span class="logo-main">Programiz</span>
         <span class="logo-sub">Online Java Compiler</span>
     </div>
-    <button class="pro-btn">Programiz PRO ></button>
+    <div class="header-right">
+        <button class="header-btn">Java ▾</button>
+        <button class="header-btn primary">PRO</button>
+    </div>
 </header>
 
 <div class="app-body">
+    <!-- SIDEBAR -->
     <div class="sidebar">
-        <div class="icon-circle">Py</div><div class="icon-circle">R</div><div class="icon-circle">C</div>
         <div class="icon-circle icon-java">☕</div>
-        <div class="icon-circle">K</div><div class="icon-circle">JS</div>
+        <div class="icon-circle icon-sidebar">📁</div>
+        <div class="icon-circle icon-sidebar">⚙</div>
     </div>
 
+    <!-- WORKSPACE -->
     <div class="workspace">
+        <!-- TOOLBAR -->
         <div class="toolbar">
-            <div class="tab">Main.java</div>
-            <div class="controls"><button class="run-btn" onclick="processJava()">Run</button></div>
-        </div>
-        <div class="panes">
-            <div class="editor-pane"><textarea id="code-input" spellcheck="false"></textarea></div>
-            <div class="output-pane">
-                <div class="output-header">Output</div>
-                <div id="console"></div>
+            <div class="tabs">
+                <div class="tab">
+                    ☕ Main.java <span class="close-icon">✕</span>
+                </div>
             </div>
+            <div class="toolbar-actions">
+                <span class="input-hint">Enter 1–19 in Input, press Run</span>
+                <button class="run-btn" onclick="runProgram()">
+                    <span class="play-icon">▶</span> Run
+                </button>
+            </div>
+        </div>
+
+        <!-- PANES -->
+        <div class="panes">
+            <!-- EDITOR -->
+            <div class="editor-pane">
+                <div class="tooltip" id="tooltip">Program loaded! Press Run again to execute.</div>
+                <div class="editor-wrap">
+                    <div class="line-numbers" id="line-numbers">1</div>
+                    <textarea id="code-input" spellcheck="false"
+                        placeholder="Type a program number (1–19) in the Input box below and click Run..."></textarea>
+                </div>
+                <div class="input-section">
+                    <div class="input-label">Input (stdin)</div>
+                    <input type="text" id="prog-input" placeholder="Enter program number (1 to 19) and press Run..." />
+                </div>
+            </div>
+
+            <!-- OUTPUT -->
+            <div class="output-pane">
+                <div class="output-header">
+                    Output
+                    <span>
+                        <button class="clear-btn" onclick="clearOutput()">Clear</button>
+                    </span>
+                </div>
+                <div id="console">// Output will appear here after you click Run</div>
+            </div>
+        </div>
+
+        <!-- STATUS BAR -->
+        <div class="status-bar">
+            <span id="status-left">Ready</span>
+            <span>Java 17 | UTF-8</span>
         </div>
     </div>
 </div>
 
 <script>
-    const db = {
-        "1": { code: "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", out: "Hello, World!" },
-        "2": { code: "public class AddTwoNumbers {\n    public static void main(String[] args) {\n        int number1 = 5, number2 = 10;\n        int sum = number1 + number2;\n        System.out.println(\"The sum of \" + number1 + \" and \" + number2 + \" is: \" + sum);\n    }\n}", out: "The sum of 5 and 10 is: 15" },
-        "3": { code: "import java.util.Scanner;\n\npublic class EvenOrOdd {\n    public static void main(String[] args) {\n        int number = 10;\n        if (number % 2 == 0) {\n            System.out.println(number + \" is an even number.\");\n        } else {\n            System.out.println(number + \" is an odd number.\");\n        }\n    }\n}", out: "10 is an even number." },
-        "4": { code: "public class FibonacciSeries {\n    public static void main(String[] args) {\n        int n = 10, firstTerm = 0, secondTerm = 1;\n        System.out.println(\"Fibonacci Series up to \" + n + \" terms:\");\n        for (int i = 1; i <= n; ++i) {\n            System.out.print(firstTerm + \" \");\n            int nextTerm = firstTerm + secondTerm;\n            firstTerm = secondTerm;\n            secondTerm = nextTerm;\n        }\n    }\n}", out: "Fibonacci Series up to 10 terms:\n0 1 1 2 3 5 8 13 21 34" },
-        "5": { code: "public class MultiplyTwoNumbers {\n    public static void main(String[] args) {\n        float first = 1.5f;\n        float second = 2.0f;\n        float product = first * second;\n        System.out.println(\"The product is: \" + product);\n    }\n}", out: "The product is: 3.0" },
-        "6": { code: "public class QuotientRemainder {\n    public static void main(String[] args) {\n        int dividend = 25, divisor = 4;\n        int quotient = dividend / divisor;\n        int remainder = dividend % divisor;\n        System.out.println(\"Quotient = \" + quotient);\n        System.out.println(\"Remainder = \" + remainder);\n    }\n}", out: "Quotient = 6\nRemainder = 1" },
-        "7": { code: "import java.util.Scanner;\n\npublic class PrimeCheck {\n    public static void main(String[] args) {\n        int num = 29;\n        boolean isPrime = true;\n        if (num <= 1) {\n            isPrime = false;\n        } else {\n            for (int i = 2; i <= num / 2; i++) {\n                if (num % i == 0) {\n                    isPrime = false;\n                    break;\n                }\n            }\n        }\n        if (isPrime) {\n            System.out.println(num + \" is a Prime number.\");\n        } else {\n            System.out.println(num + \" is NOT a Prime number.\");\n        }\n    }\n}", out: "29 is a Prime number." },
-        "8": { code: "import java.util.Scanner;\n\npublic class PalindromeNumber {\n    public static void main(String[] args) {\n        int num = 121, original = num, reverse = 0;\n        while (num > 0) {\n            int digit = num % 10;\n            reverse = reverse * 10 + digit;\n            num = num / 10;\n        }\n        if (original == reverse) {\n            System.out.println(original + \" is a Palindrome number.\");\n        } else {\n            System.out.println(original + \" is NOT a Palindrome number.\");\n        }\n    }\n}", out: "121 is a Palindrome number." },
-        "9": { code: "public class GeometryCalculator {\n    public static void main(String[] args) {\n        double side = 5.0;\n        double radius = 3.0;\n        System.out.println(\"Square Area = \" + (side * side));\n        System.out.println(\"Circle Area = \" + (Math.PI * radius * radius));\n    }\n}", out: "Square Area = 25.0\nCircle Area = 28.274333882308138" },
-        "10": { code: "public class RightTriangle {\n    public static void main(String[] args) {\n        int rows = 5;\n        for (int i = 1; i <= rows; i++) {\n            for (int j = 1; j <= i; j++) {\n                System.out.print(\"* \");\n            }\n            System.out.println();\n        }\n    }\n}", out: "* \n* * \n* * * \n* * * * \n* * * * * " }
-    };
+const programs = {
+    "1": {
+        title: "Hello World",
+        code: `public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!"); // Prints the string to the console
+    }
+}`,
+        output: `Hello, World!`
+    },
+    "2": {
+        title: "Add Two Numbers",
+        code: `public class AddTwoNumbers {
+    public static void main(String[] args) {
+        int number1 = 5;
+        int number2 = 10;
+        int sum;
+        sum = number1 + number2;
+        System.out.println("The sum of " + number1 + " and " + number2 + " is: " + sum);
+    }
+}`,
+        output: `The sum of 5 and 10 is: 15`
+    },
+    "3": {
+        title: "Even or Odd",
+        code: `import java.util.Scanner;
 
-    function processJava() {
-        const editor = document.getElementById('code-input');
-        const consoleOut = document.getElementById('console');
-        const key = editor.value.trim();
-
-        if (db[key]) {
-            // Updated: This now replaces the number in the code section with the actual Java code
-            editor.value = db[key].code; 
-            consoleOut.innerHTML = db[key].out;
-        } else if (key === "") {
-            consoleOut.innerHTML = "Please enter a program ID.";
+public class EvenOrOdd {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter a number: ");
+        int number = scanner.nextInt();
+        if (number % 2 == 0) {
+            System.out.println(number + " is an even number.");
         } else {
-            consoleOut.innerHTML = "Program ID not found in library.";
+            System.out.println(number + " is an odd number.");
+        }
+        scanner.close();
+    }
+}`,
+        output: `Enter a number: 7
+7 is an odd number.`
+    },
+    "4": {
+        title: "Fibonacci Series",
+        code: `public class FibonacciSeries {
+    public static void main(String[] args) {
+        int n = 10, firstTerm = 0, secondTerm = 1;
+        System.out.println("Fibonacci Series up to " + n + " terms:");
+        for (int i = 1; i <= n; ++i) {
+            System.out.print(firstTerm + " ");
+            int nextTerm = firstTerm + secondTerm;
+            firstTerm = secondTerm;
+            secondTerm = nextTerm;
         }
     }
+}`,
+        output: `Fibonacci Series up to 10 terms:
+0 1 1 2 3 5 8 13 21 34 `
+    },
+    "5": {
+        title: "Multiply Two Floating-Point Numbers",
+        code: `public class MultiplyTwoNumbers {
+    public static void main(String[] args) {
+        float first = 1.5f;
+        float second = 2.0f;
+        float product = first * second;
+        System.out.println("The product is: " + product);
+    }
+}`,
+        output: `The product is: 3.0`
+    },
+    "6": {
+        title: "Quotient and Remainder",
+        code: `public class QuotientRemainder {
+    public static void main(String[] args) {
+        int dividend = 25, divisor = 4;
+        int quotient = dividend / divisor;
+        int remainder = dividend % divisor;
+        System.out.println("Quotient = " + quotient);
+        System.out.println("Remainder = " + remainder);
+    }
+}`,
+        output: `Quotient = 6
+Remainder = 1`
+    },
+    "7": {
+        title: "Prime Number Check",
+        code: `import java.util.Scanner;
+
+public class PrimeCheck {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter a number: ");
+        int num = sc.nextInt();
+        boolean isPrime = true;
+        if (num <= 1) {
+            isPrime = false;
+        } else {
+            for (int i = 2; i <= num / 2; i++) {
+                if (num % i == 0) {
+                    isPrime = false;
+                    break;
+                }
+            }
+        }
+        if (isPrime) {
+            System.out.println(num + " is a Prime number.");
+        } else {
+            System.out.println(num + " is NOT a Prime number.");
+        }
+    }
+}`,
+        output: `Enter a number: 29
+29 is a Prime number.`
+    },
+    "8": {
+        title: "Palindrome Number",
+        code: `import java.util.Scanner;
+
+public class PalindromeNumber {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter a number: ");
+        int num = sc.nextInt();
+        int original = num;
+        int reverse = 0;
+        while (num > 0) {
+            int digit = num % 10;
+            reverse = reverse * 10 + digit;
+            num = num / 10;
+        }
+        if (original == reverse)
+            System.out.println(original + " is a Palindrome number.");
+        else
+            System.out.println(original + " is NOT a Palindrome number.");
+    }
+}`,
+        output: `Enter a number: 121
+121 is a Palindrome number.`
+    },
+    "9": {
+        title: "Geometry Calculator",
+        code: `import java.util.Scanner;
+
+public class GeometryCalculator {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter side of square: ");
+        double side = sc.nextDouble();
+        double squareArea = side * side;
+        double squarePerimeter = 4 * side;
+        System.out.print("Enter length of rectangle: ");
+        double length = sc.nextDouble();
+        System.out.print("Enter breadth of rectangle: ");
+        double breadth = sc.nextDouble();
+        double rectangleArea = length * breadth;
+        double rectanglePerimeter = 2 * (length + breadth);
+        System.out.print("Enter radius of circle: ");
+        double radius = sc.nextDouble();
+        double circleArea = Math.PI * radius * radius;
+        double circleCircumference = 2 * Math.PI * radius;
+        System.out.print("Enter radius of cylinder: ");
+        double r = sc.nextDouble();
+        System.out.print("Enter height of cylinder: ");
+        double h = sc.nextDouble();
+        double cylinderSurfaceArea = 2 * Math.PI * r * (r + h);
+        double cylinderCircumference = 2 * Math.PI * r;
+
+        System.out.println("\n--- RESULTS ---");
+        System.out.println("Square Area = " + squareArea);
+        System.out.println("Square Perimeter = " + squarePerimeter);
+        System.out.println("\nRectangle Area = " + rectangleArea);
+        System.out.println("Rectangle Perimeter = " + rectanglePerimeter);
+        System.out.println("\nCircle Area = " + circleArea);
+        System.out.println("Circle Circumference = " + circleCircumference);
+        System.out.println("\nCylinder Surface Area = " + cylinderSurfaceArea);
+        System.out.println("Cylinder Circumference = " + cylinderCircumference);
+    }
+}`,
+        output: `Enter side of square: 5
+Enter length of rectangle: 4
+Enter breadth of rectangle: 3
+Enter radius of circle: 7
+Enter radius of cylinder: 3
+Enter height of cylinder: 10
+
+--- RESULTS ---
+Square Area = 25.0
+Square Perimeter = 20.0
+
+Rectangle Area = 12.0
+Rectangle Perimeter = 14.0
+
+Circle Area = 153.93804002589985
+Circle Circumference = 43.982297150257104
+
+Cylinder Surface Area = 244.92894...
+Cylinder Circumference = 18.84955...`
+    },
+    "10": {
+        title: "Right Angled Triangle Pattern",
+        code: `public class RightTriangle {
+    public static void main(String[] args) {
+        int rows = 5;
+        for (int i = 1; i <= rows; i++) {
+            for (int j = 1; j <= i; j++) {
+                System.out.print("* ");
+            }
+            System.out.println();
+        }
+    }
+}`,
+        output: `* 
+* * 
+* * * 
+* * * * 
+* * * * * `
+    },
+    "11": {
+        title: "Inverted Right Angled Triangle Pattern",
+        code: `public class RightTriangle {
+    public static void main(String[] args) {
+        int n = 5;
+        for (int i = n; i >= 1; i--) {
+            for (int j = 1; j <= i; j++) {
+                System.out.print("* ");
+            }
+            System.out.println();
+        }
+    }
+}`,
+        output: `* * * * * 
+* * * * 
+* * * 
+* * 
+* `
+    },
+    "12": {
+        title: "Mirrored Right Angled Triangle Pattern",
+        code: `public class RightTriangle {
+    public static void main(String[] args) {
+        int n = 5;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n - i; j++) {
+                System.out.print(" ");
+            }
+            for (int k = 1; k <= i; k++) {
+                System.out.print("* ");
+            }
+            System.out.println();
+        }
+    }
+}`,
+        output: `    * 
+   * * 
+  * * * 
+ * * * * 
+* * * * * `
+    },
+    "13": {
+        title: "Sum of Array",
+        code: `import java.util.Scanner;
+
+public class UserArraySum {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the number of elements: ");
+        int n = sc.nextInt();
+        int[] numbers = new int[n];
+        int sum = 0;
+        System.out.println("Enter " + n + " integers:");
+        for (int i = 0; i < n; i++) {
+            numbers[i] = sc.nextInt();
+            sum += numbers[i];
+        }
+        System.out.println("The total sum is: " + sum);
+        sc.close();
+    }
+}`,
+        output: `Enter the number of elements: 5
+Enter 5 integers:
+10 20 30 40 50
+The total sum is: 150`
+    },
+    "14": {
+        title: "Transpose of Matrix",
+        code: `import java.util.Scanner;
+
+public class MatrixTranspose {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter number of rows: ");
+        int rows = sc.nextInt();
+        System.out.print("Enter number of columns: ");
+        int cols = sc.nextInt();
+        int[][] matrix = new int[rows][cols];
+        System.out.println("Enter matrix elements:");
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                matrix[i][j] = sc.nextInt();
+            }
+        }
+        System.out.println("\nOriginal Matrix:");
+        displayMatrix(matrix);
+        int[][] transpose = new int[cols][rows];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                transpose[j][i] = matrix[i][j];
+            }
+        }
+        System.out.println("\nTransposed Matrix:");
+        displayMatrix(transpose);
+        sc.close();
+    }
+
+    public static void displayMatrix(int[][] mat) {
+        for (int[] row : mat) {
+            for (int element : row) {
+                System.out.print(element + "\t");
+            }
+            System.out.println();
+        }
+    }
+}`,
+        output: `Enter number of rows: 2
+Enter number of columns: 3
+Enter matrix elements:
+1 2 3
+4 5 6
+
+Original Matrix:
+1	2	3	
+4	5	6	
+
+Transposed Matrix:
+1	4	
+2	5	
+3	6	`
+    },
+    "15": {
+        title: "Count & Sum: Divisible by 7 (100–200)",
+        code: `public class DivisibleBySeven {
+    public static void main(String[] args) {
+        int count = 0;
+        int sum = 0;
+        System.out.println("Integers between 100 and 200 divisible by 7:");
+        for (int i = 101; i < 200; i++) {
+            if (i % 7 == 0) {
+                System.out.print(i + " ");
+                count++;
+                sum += i;
+            }
+        }
+        System.out.println("\n\nNumber of integers: " + count);
+        System.out.println("Sum of integers: " + sum);
+    }
+}`,
+        output: `Integers between 100 and 200 divisible by 7:
+105 112 119 126 133 140 147 154 161 168 175 182 189 196 
+
+Number of integers: 14
+Sum of integers: 2107`
+    },
+    "16": {
+        title: "Grade Distribution",
+        code: `import java.util.Scanner;
+
+public class GradeDistribution {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter the number of students: ");
+        int n = input.nextInt();
+        int[] marks = new int[n];
+        int rangeA = 0; // 81 to 100
+        int rangeB = 0; // 61 to 80
+        int rangeC = 0; // 41 to 60
+        int rangeD = 0; // 0 to 40
+        System.out.println("Enter the marks (0-100):");
+        for (int i = 0; i < n; i++) {
+            marks[i] = input.nextInt();
+            if (marks[i] >= 81 && marks[i] <= 100) {
+                rangeA++;
+            } else if (marks[i] >= 61 && marks[i] <= 80) {
+                rangeB++;
+            } else if (marks[i] >= 41 && marks[i] <= 60) {
+                rangeC++;
+            } else if (marks[i] >= 0 && marks[i] <= 40) {
+                rangeD++;
+            }
+        }
+        System.out.println("\n--- Marks Distribution ---");
+        System.out.println("81 to 100: " + rangeA + " student(s)");
+        System.out.println("61 to 80 : " + rangeB + " student(s)");
+        System.out.println("41 to 60 : " + rangeC + " student(s)");
+        System.out.println(" 0 to 40 : " + rangeD + " student(s)");
+        input.close();
+    }
+}`,
+        output: `Enter the number of students: 5
+Enter the marks (0-100):
+95 72 55 30 88
+
+--- Marks Distribution ---
+81 to 100: 2 student(s)
+61 to 80 : 1 student(s)
+41 to 60 : 1 student(s)
+ 0 to 40 : 1 student(s)`
+    },
+    "17": {
+        title: "Bank Account (Display Only)",
+        code: `import java.util.Scanner;
+
+class BankAccount {
+    private String depositorName;
+    private long accountNo;
+    private String typeOfAccount;
+    private double balanceAmount;
+
+    public BankAccount(String name, long accNo, String type, double balance) {
+        this.depositorName = name;
+        this.accountNo = accNo;
+        this.typeOfAccount = type;
+        this.balanceAmount = balance;
+    }
+
+    public void display() {
+        System.out.println("\n--- Account Details ---");
+        System.out.println("Depositor: " + depositorName);
+        System.out.println("Account Number: " + accountNo);
+        System.out.println("Account Type: " + typeOfAccount);
+        System.out.println("Balance: \u20b9" + balanceAmount);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter Depositor Name: ");
+        String name = sc.nextLine();
+        System.out.print("Enter Account Number: ");
+        long accNo = sc.nextLong();
+        sc.nextLine();
+        System.out.print("Enter Account Type (Savings/Current): ");
+        String type = sc.nextLine();
+        System.out.print("Enter Initial Balance: ");
+        double bal = sc.nextDouble();
+        BankAccount myAccount = new BankAccount(name, accNo, type, bal);
+        myAccount.display();
+        sc.close();
+    }
+}`,
+        output: `Enter Depositor Name: Ravi Kumar
+Enter Account Number: 10234567
+Enter Account Type (Savings/Current): Savings
+Enter Initial Balance: 50000
+
+--- Account Details ---
+Depositor: Ravi Kumar
+Account Number: 10234567
+Account Type: Savings
+Balance: ₹50000.0`
+    },
+    "18": {
+        title: "Bank Account (Deposit & Withdraw)",
+        code: `import java.util.Scanner;
+
+class BankAccount {
+    private String depositorName;
+    private long accountNo;
+    private String typeOfAccount;
+    private double balanceAmount;
+
+    public BankAccount(String name, long accNo, String type, double initialBalance) {
+        this.depositorName = name;
+        this.accountNo = accNo;
+        this.typeOfAccount = type;
+        this.balanceAmount = initialBalance;
+    }
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balanceAmount += amount;
+            System.out.println("Successfully deposited: " + amount);
+        } else {
+            System.out.println("Invalid deposit amount.");
+        }
+    }
+
+    public void withdraw(double amount) {
+        if (amount > balanceAmount) {
+            System.out.println("Insufficient balance! Current balance: " + balanceAmount);
+        } else if (amount <= 0) {
+            System.out.println("Invalid withdrawal amount.");
+        } else {
+            balanceAmount -= amount;
+            System.out.println("Successfully withdrawn: " + amount);
+        }
+    }
+
+    public void display() {
+        System.out.println("\n--- Account Info ---");
+        System.out.println("Depositor: " + depositorName);
+        System.out.println("Balance: " + balanceAmount);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter Name: ");
+        String name = sc.nextLine();
+        System.out.print("Enter Account Number: ");
+        long accNo = sc.nextLong();
+        sc.nextLine();
+        System.out.print("Enter Account Type: ");
+        String type = sc.nextLine();
+        System.out.print("Enter Initial Balance: ");
+        double bal = sc.nextDouble();
+        BankAccount account = new BankAccount(name, accNo, type, bal);
+        System.out.print("\nEnter amount to deposit: ");
+        account.deposit(sc.nextDouble());
+        System.out.print("Enter amount to withdraw: ");
+        account.withdraw(sc.nextDouble());
+        account.display();
+        sc.close();
+    }
+}`,
+        output: `Enter Name: Priya Sharma
+Enter Account Number: 98765432
+Enter Account Type: Current
+Enter Initial Balance: 20000
+
+Enter amount to deposit: 5000
+Successfully deposited: 5000.0
+Enter amount to withdraw: 3000
+Successfully withdrawn: 3000.0
+
+--- Account Info ---
+Depositor: Priya Sharma
+Balance: 22000.0`
+    },
+    "19": {
+        title: "Savings & Current Account (Inheritance)",
+        code: `import java.util.Scanner;
+
+class Account {
+    String customerName;
+    String accountNo;
+    String accountType;
+    double balance;
+
+    Account(String name, String num, String type) {
+        this.customerName = name;
+        this.accountNo = num;
+        this.accountType = type;
+        this.balance = 0.0;
+    }
+
+    void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Successfully deposited: " + amount);
+        } else {
+            System.out.println("Invalid amount.");
+        }
+    }
+
+    void displayBalance() {
+        System.out.println("\n--- " + accountType + " Account ---");
+        System.out.println("Customer: " + customerName + " | Acc No: " + accountNo);
+        System.out.println("Current Balance: " + balance);
+    }
+
+    void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            System.out.println("Withdrawn: " + amount);
+        } else {
+            System.out.println("Error: Insufficient funds or invalid amount.");
+        }
+    }
+}
+
+class SavingsAccount extends Account {
+    double interestRate = 0.05;
+
+    SavingsAccount(String name, String num) {
+        super(name, num, "Savings");
+    }
+
+    void computeAndDepositInterest() {
+        double interest = balance * interestRate;
+        balance += interest;
+        System.out.println("Interest of " + interest + " (5%) added to balance.");
+    }
+}
+
+class CurrentAccount extends Account {
+    double minBalance = 1000.0;
+    double penalty = 50.0;
+
+    CurrentAccount(String name, String num) {
+        super(name, num, "Current");
+    }
+
+    @Override
+    void withdraw(double amount) {
+        super.withdraw(amount);
+        checkMinBalance();
+    }
+
+    void checkMinBalance() {
+        if (balance < minBalance) {
+            balance -= penalty;
+            System.out.println("ALERT: Balance below " + minBalance +
+                ". Penalty of " + penalty + " applied.");
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter Customer Name: ");
+        String name = sc.nextLine();
+        System.out.print("Enter Account Number: ");
+        String accNo = sc.nextLine();
+        System.out.print("Choose Account Type (1 for Savings, 2 for Current): ");
+        int type = sc.nextInt();
+
+        Account account;
+        if (type == 1) {
+            account = new SavingsAccount(name, accNo);
+        } else {
+            account = new CurrentAccount(name, accNo);
+        }
+
+        int choice;
+        do {
+            System.out.println("\n--- BANK MENU ---");
+            System.out.println("1. Deposit");
+            System.out.println("2. Display Balance");
+            System.out.println("3. Compute Interest (Savings only)");
+            System.out.println("4. Withdraw");
+            System.out.println("5. Check Min Balance (Current only)");
+            System.out.println("6. Exit");
+            System.out.print("Enter choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter amount to deposit: ");
+                    account.deposit(sc.nextDouble());
+                    break;
+                case 2:
+                    account.displayBalance();
+                    break;
+                case 3:
+                    if (account instanceof SavingsAccount) {
+                        ((SavingsAccount) account).computeAndDepositInterest();
+                    } else {
+                        System.out.println("Interest only for Savings Accounts.");
+                    }
+                    break;
+                case 4:
+                    System.out.print("Enter amount to withdraw: ");
+                    account.withdraw(sc.nextDouble());
+                    break;
+                case 5:
+                    if (account instanceof CurrentAccount) {
+                        ((CurrentAccount) account).checkMinBalance();
+                    } else {
+                        System.out.println("Min balance rules only for Current Accounts.");
+                    }
+                    break;
+                case 6:
+                    System.out.println("Thank you for using our bank!");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Try again.");
+            }
+        } while (choice != 6);
+        sc.close();
+    }
+}`,
+        output: `Enter Customer Name: Amit Patel
+Enter Account Number: SA001
+Choose Account Type (1 for Savings, 2 for Current): 1
+
+--- BANK MENU ---
+1. Deposit
+2. Display Balance
+3. Compute Interest (Savings only)
+4. Withdraw
+5. Check Min Balance (Current only)
+6. Exit
+Enter choice: 1
+Enter amount to deposit: 10000
+Successfully deposited: 10000.0
+
+--- BANK MENU ---
+Enter choice: 3
+Interest of 500.0 (5%) added to balance.
+
+--- BANK MENU ---
+Enter choice: 2
+
+--- Savings Account ---
+Customer: Amit Patel | Acc No: SA001
+Current Balance: 10500.0
+
+--- BANK MENU ---
+Enter choice: 6
+Thank you for using our bank!`
+    }
+};
+
+let loaded = false;
+let currentNum = null;
+
+function updateLineNumbers() {
+    const textarea = document.getElementById('code-input');
+    const lineNums = document.getElementById('line-numbers');
+    const lines = textarea.value.split('\n').length;
+    let nums = '';
+    for (let i = 1; i <= Math.max(lines, 1); i++) {
+        nums += i + '\n';
+    }
+    lineNums.textContent = nums;
+}
+
+function syncScroll() {
+    const textarea = document.getElementById('code-input');
+    const lineNums = document.getElementById('line-numbers');
+    lineNums.scrollTop = textarea.scrollTop;
+}
+
+document.getElementById('code-input').addEventListener('input', updateLineNumbers);
+document.getElementById('code-input').addEventListener('scroll', syncScroll);
+document.getElementById('prog-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') runProgram();
+});
+
+function showTooltip(msg) {
+    const t = document.getElementById('tooltip');
+    t.textContent = msg;
+    t.classList.add('visible');
+    setTimeout(() => t.classList.remove('visible'), 2500);
+}
+
+function runProgram() {
+    const key = document.getElementById('prog-input').value.trim();
+    const consoleOut = document.getElementById('console');
+    const statusLeft = document.getElementById('status-left');
+
+    if (!key) {
+        consoleOut.innerHTML = '<span class="error">Error: Please enter a program number (1–19) in the Input box below.</span>';
+        return;
+    }
+
+    if (!programs[key]) {
+        consoleOut.innerHTML = `<span class="error">Error: Program "${key}" not found. Please enter a number between 1 and 19.</span>`;
+        statusLeft.textContent = 'Error';
+        return;
+    }
+
+    const prog = programs[key];
+
+    // First run: load code into editor
+    if (!loaded || currentNum !== key) {
+        document.getElementById('code-input').value = prog.code;
+        updateLineNumbers();
+        loaded = true;
+        currentNum = key;
+        consoleOut.innerHTML = `<span class="info">// Program ${key}: ${prog.title} loaded into editor.\n// Press Run again to see the output.</span>`;
+        statusLeft.textContent = `Loaded: Program ${key} — ${prog.title}`;
+        showTooltip(`Program ${key} loaded! Press Run again to execute.`);
+        return;
+    }
+
+    // Second run: show output
+    consoleOut.textContent = prog.output;
+    statusLeft.textContent = `Executed: Program ${key} — ${prog.title}`;
+    loaded = false; // reset so next entry of same number reloads
+}
+
+function clearOutput() {
+    document.getElementById('console').textContent = '// Output will appear here after you click Run';
+    document.getElementById('status-left').textContent = 'Ready';
+    loaded = false;
+    currentNum = null;
+}
+
+// Init line numbers
+updateLineNumbers();
 </script>
 </body>
 </html>
